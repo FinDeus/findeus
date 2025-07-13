@@ -1,0 +1,243 @@
+version: '3.8'
+
+services:
+  # Meta-controller service
+  meta-controller:
+    build: ./services/meta-controller
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GROK_API_KEY=${GROK_API_KEY}
+    volumes:
+      - ./services/meta-controller/logs:/app/logs
+    depends_on:
+      - redis
+    networks:
+      - findeus-network
+
+  # Embedding service
+  embedding-service:
+    build: ./services/embedding-service
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - PINECONE_ENVIRONMENT=${PINECONE_ENVIRONMENT}
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    volumes:
+      - ./services/embedding-service/logs:/app/logs
+      - ./services/embedding-service/uploads:/app/uploads
+    depends_on:
+      - elasticsearch
+      - redis
+    networks:
+      - findeus-network
+
+  # Knowledge graph service
+  knowledge-graph:
+    build: ./services/knowledge-graph
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=findeus123
+    volumes:
+      - ./services/knowledge-graph/logs:/app/logs
+    depends_on:
+      - neo4j
+    networks:
+      - findeus-network
+
+  # Finance engine
+  finance-engine:
+    build: ./services/finance-engine
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - PORT=3004
+      - DATABASE_URL=postgresql://postgres:findeus123@postgres:5432/findeus_finance
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./services/finance-engine/logs:/app/logs
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - findeus-network
+
+  # Ideation engine
+  ideation-engine:
+    build: ./services/ideation-engine
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=development
+      - PORT=3005
+      - DATABASE_URL=postgresql://postgres:findeus123@postgres:5432/findeus_ideation
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./services/ideation-engine/logs:/app/logs
+    depends_on:
+      - postgres
+    networks:
+      - findeus-network
+
+  # API Gateway
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - JWT_SECRET=${JWT_SECRET}
+      - META_CONTROLLER_URL=http://meta-controller:3001
+      - EMBEDDING_SERVICE_URL=http://embedding-service:3002
+      - KNOWLEDGE_GRAPH_URL=http://knowledge-graph:3003
+      - FINANCE_ENGINE_URL=http://finance-engine:3004
+      - IDEATION_ENGINE_URL=http://ideation-engine:3005
+    depends_on:
+      - meta-controller
+      - embedding-service
+      - knowledge-graph
+      - finance-engine
+      - ideation-engine
+    networks:
+      - findeus-network
+
+  # UI Dashboard
+  ui-dashboard:
+    build: ./ui-dashboard
+    ports:
+      - "3006:3006"
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3000
+    depends_on:
+      - api-gateway
+    networks:
+      - findeus-network
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - findeus-network
+
+  # PostgreSQL for structured data
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=findeus
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=findeus123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - findeus-network
+
+  # Neo4j for knowledge graph
+  neo4j:
+    image: neo4j:5-community
+    environment:
+      - NEO4J_AUTH=neo4j/findeus123
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    networks:
+      - findeus-network
+
+  # Elasticsearch for vector search
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - findeus-network
+
+  # Kibana for Elasticsearch management
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - findeus-network
+
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      - findeus-network
+
+  # Grafana for monitoring dashboards
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3007:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=findeus123
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./infrastructure/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    networks:
+      - findeus-network
+
+networks:
+  findeus-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  postgres_data:
+  neo4j_data:
+  neo4j_logs:
+  elasticsearch_data:
+  prometheus_data:
+  grafana_data: 

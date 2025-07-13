@@ -1,0 +1,47 @@
+{
+  "name": "@findeus/embedding-service",
+  "version": "1.0.0",
+  "description": "Embedding and RAG service for FinDeus platform",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "axios": "^1.6.8",
+    "winston": "^3.11.0",
+    "openai": "^4.28.4",
+    "pinecone-client": "^1.1.0",
+    "@elastic/elasticsearch": "^8.12.2",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.7.1",
+    "cheerio": "^1.0.0-rc.12",
+    "node-cron": "^3.0.3",
+    "ioredis": "^5.3.2",
+    "pg": "^8.11.3",
+    "uuid": "^9.0.1",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/compression": "^1.7.5",
+    "@types/jest": "^29.5.12",
+    "@types/multer": "^1.4.11",
+    "@types/uuid": "^9.0.8",
+    "@types/pg": "^8.11.2",
+    "typescript": "^5.4.2",
+    "ts-node-dev": "^2.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2"
+  }
+} 

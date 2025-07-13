@@ -291,7 +291,7 @@ if __name__ == '__main__':
     print("   • Startup Ideation")
     print("   • Knowledge Graph")
     print()
-    print("🌐 Opening in browser: http://localhost:5000")
+    print("🌐 Opening in browser: http://localhost:8080")
     print("Press Ctrl+C to stop the server")
     
-    app.run(host='0.0.0.0', port=5000, debug=True) 
+    app.run(host='0.0.0.0', port=8080, debug=True) 

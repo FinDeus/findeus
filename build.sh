@@ -10,6 +10,12 @@ echo "📦 Installing Python dependencies..."
 python3 -m pip install --upgrade pip
 python3 -m pip install -r requirements.txt
 
+# Install function dependencies
+echo "⚡ Installing Netlify function dependencies..."
+if [ -f "netlify/functions/requirements.txt" ]; then
+    python3 -m pip install -r netlify/functions/requirements.txt
+fi
+
 # Verify static files exist
 echo "📁 Verifying static files..."
 if [ ! -d "static" ]; then

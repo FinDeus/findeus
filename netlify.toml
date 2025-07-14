@@ -8,18 +8,20 @@
   FLASK_ENV = "production"
   FLASK_DEBUG = "False"
   
+[functions]
+  directory = "netlify/functions"
+  python_version = "3.9"
+  
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/app/:splat"
   status = 200
+  force = true
   
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[functions]
-  directory = "netlify/functions"
   
 [dev]
   command = "python web_app.py"

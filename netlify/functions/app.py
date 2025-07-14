@@ -12,47 +12,43 @@ def handler(event, context):
     Netlify serverless function handler for Flask app
     """
     try:
-        # Import the Flask app here to avoid import issues
+        # Import Flask app
         from netlify_app import app
         
-        # Get the HTTP method and path
+        # Get request details
         http_method = event.get('httpMethod', 'GET')
         path = event.get('path', '/')
-        
-        # Remove the /.netlify/functions/app prefix if present
-        if path.startswith('/.netlify/functions/app'):
-            path = path[len('/.netlify/functions/app'):]
-        if not path:
-            path = '/'
-            
-        # Get query parameters
         query_params = event.get('queryStringParameters') or {}
-        
-        # Get headers
         headers = event.get('headers', {})
-        
-        # Get body
         body = event.get('body', '')
+        
+        # Handle base64 encoded body
         if body and event.get('isBase64Encoded', False):
             import base64
             body = base64.b64decode(body).decode('utf-8')
         
-        # Create a test client
+        # Remove function prefix from path
+        if path.startswith('/.netlify/functions/app'):
+            path = path[len('/.netlify/functions/app'):]
+        if not path:
+            path = '/'
+        
+        # Create Flask test client
         with app.test_client() as client:
             # Build query string
-            query_string = '&'.join([f"{k}={v}" for k, v in query_params.items()])
+            query_string = '&'.join([f"{k}={v}" for k, v in query_params.items()]) if query_params else ''
             
-            # Make the request
+            # Make request to Flask app
             response = client.open(
                 path=path,
                 method=http_method,
-                headers=[(k, v) for k, v in headers.items()],
+                headers=list(headers.items()),
                 query_string=query_string,
                 data=body,
                 content_type=headers.get('content-type', 'application/json')
             )
             
-            # Get response headers
+            # Prepare response headers
             response_headers = {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
@@ -60,41 +56,29 @@ def handler(event, context):
                 'Access-Control-Allow-Headers': 'Content-Type, Authorization'
             }
             
-            # Add original response headers
+            # Add Flask response headers
             for key, value in response.headers:
                 response_headers[key] = value
             
-            # Return the response
             return {
                 'statusCode': response.status_code,
                 'headers': response_headers,
-                'body': response.get_data(as_text=True),
-                'isBase64Encoded': False
+                'body': response.get_data(as_text=True)
             }
             
-    except ImportError as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({
-                'error': 'Import error',
-                'message': str(e),
-                'path': str(project_root)
-            }),
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
-        }
     except Exception as e:
+        # Return detailed error for debugging
         return {
             'statusCode': 500,
-            'body': json.dumps({
-                'error': 'Internal server error',
-                'message': str(e),
-                'type': type(e).__name__
-            }),
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
-            }
+            },
+            'body': json.dumps({
+                'error': 'Function execution failed',
+                'message': str(e),
+                'type': type(e).__name__,
+                'path': path if 'path' in locals() else 'unknown',
+                'method': http_method if 'http_method' in locals() else 'unknown'
+            })
         } 

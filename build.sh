@@ -7,20 +7,38 @@ echo "🚀 Starting FinDeus build process..."
 
 # Check Python version
 echo "🐍 Checking Python version..."
-python3 --version || python --version
+if command -v python3 &> /dev/null; then
+    python3 --version
+    PYTHON_CMD="python3"
+elif command -v python &> /dev/null; then
+    python --version
+    PYTHON_CMD="python"
+else
+    echo "❌ No Python found!"
+    exit 1
+fi
 
 # Set up Python environment
 echo "📦 Setting up Python environment..."
-python3 -m pip install --upgrade pip || pip install --upgrade pip
+$PYTHON_CMD -m pip install --upgrade pip || pip install --upgrade pip || {
+    echo "❌ Failed to upgrade pip"
+    exit 1
+}
 
 # Install main dependencies
 echo "📦 Installing Python dependencies..."
-python3 -m pip install -r requirements.txt || pip install -r requirements.txt
+$PYTHON_CMD -m pip install -r requirements.txt || pip install -r requirements.txt || {
+    echo "❌ Failed to install main dependencies"
+    exit 1
+}
 
 # Install function dependencies
 echo "⚡ Installing Netlify function dependencies..."
 if [ -f "netlify/functions/requirements.txt" ]; then
-    python3 -m pip install -r netlify/functions/requirements.txt || pip install -r netlify/functions/requirements.txt
+    $PYTHON_CMD -m pip install -r netlify/functions/requirements.txt || pip install -r netlify/functions/requirements.txt || {
+        echo "❌ Failed to install function dependencies"
+        exit 1
+    }
 fi
 
 # Verify static files exist

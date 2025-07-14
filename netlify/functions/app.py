@@ -13,43 +13,65 @@ from pathlib import Path
 root_dir = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(root_dir))
 
-from web_app import app
+try:
+    from web_app import app
+except ImportError:
+    # Fallback if import fails
+    from flask import Flask, jsonify
+    app = Flask(__name__)
+    
+    @app.route('/')
+    def index():
+        return jsonify({'message': 'FinDeus API is running on Netlify'})
 
 def handler(event, context):
     """
     Netlify function handler for Flask app
     """
     try:
-        # Import the WSGI adapter
-        from werkzeug.serving import WSGIRequestHandler
-        from werkzeug.wrappers import Request, Response
-        
-        # Create a request object from the event
+        # Get request details from event
         method = event.get('httpMethod', 'GET')
         path = event.get('path', '/')
         query_string = event.get('queryStringParameters') or {}
         headers = event.get('headers', {})
         body = event.get('body', '')
         
-        # Handle the request with Flask
-        with app.test_request_context(
-            path=path,
-            method=method,
-            query_string=query_string,
-            headers=headers,
-            data=body
-        ):
-            response = app.full_dispatch_request()
+        # Convert query string to proper format
+        query_params = []
+        for key, value in query_string.items():
+            query_params.append(f"{key}={value}")
+        query_string_formatted = '&'.join(query_params)
+        
+        # Create test client and make request
+        with app.test_client() as client:
+            response = client.open(
+                path=path,
+                method=method,
+                data=body,
+                headers=headers,
+                query_string=query_string_formatted
+            )
             
             return {
                 'statusCode': response.status_code,
-                'headers': dict(response.headers),
+                'headers': {
+                    'Content-Type': response.content_type,
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+                },
                 'body': response.get_data(as_text=True)
             }
             
     except Exception as e:
         return {
             'statusCode': 500,
-            'headers': {'Content-Type': 'application/json'},
-            'body': json.dumps({'error': str(e)})
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps({
+                'error': 'Internal server error',
+                'message': str(e)
+            })
         } 

@@ -2,9 +2,6 @@
   command = "echo 'No build required for static site'"
   publish = "."
 
-[build.environment]
-  PYTHON_VERSION = "3.9.18"
-
 [functions]
   directory = "netlify/functions"
 

@@ -20,8 +20,16 @@
 
 ### Step 3: Environment Variables
 In Netlify dashboard, go to Site settings → Environment variables and add:
-- `OPENAI_API_KEY` = your OpenAI API key
-- `ANTHROPIC_API_KEY` = your Anthropic API key (optional)
+
+**Required API Keys:**
+- `OPENAI_API_KEY` = `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`
+- `ANTHROPIC_API_KEY` = `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`
+- `PINECONE_API_KEY` = `pcsk_5pzSVC_LDozAkXeNkEKP48vhnVB2FQkEv5dPD9yJAWpWvyiTzbVB5PHj7fitXxQ4YGEy37`
+- `PINECONE_ENVIRONMENT` = `gcp-starter`
+
+**Flask Configuration:**
+- `FLASK_ENV` = `production`
+- `FLASK_DEBUG` = `False`
 
 ### Step 4: Deploy
 - Click "Deploy site"
@@ -35,18 +43,20 @@ In Netlify dashboard, go to Site settings → Environment variables and add:
 
 ## 🔧 Features Enabled
 - ✅ Divine "God of Finance" interface
-- ✅ AI chat functionality
+- ✅ Real AI chat functionality (OpenAI & Anthropic)
 - ✅ Real-time market data
 - ✅ Portfolio analysis
 - ✅ Risk assessment
+- ✅ Pinecone vector database integration
 - ✅ Serverless functions for API endpoints
 - ✅ Automatic HTTPS
 - ✅ Global CDN distribution
 
 ## 🛠️ Troubleshooting
-- If functions fail, check environment variables are set
+- If functions fail, check environment variables are set correctly
 - Check function logs in Netlify dashboard
-- Ensure all dependencies are in requirements.txt
+- Ensure all API keys are valid and have proper permissions
+- Verify Pinecone environment is set correctly
 
 ## 📱 Access Your Live Site
-Once deployed, your FinDeus God of Finance platform will be live at your Netlify URL! 
+Once deployed with the API keys, your FinDeus God of Finance platform will be live with full AI capabilities at your Netlify URL! 

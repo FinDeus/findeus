@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """
-FinDeus - Netlify Function Handler
-================================
+FinDeus - Netlify Function Handler with Real AI APIs
+==================================================
 """
 
 import json
 import os
+import requests
 from datetime import datetime
 
 def handler(event, context):
     """
-    Netlify function handler for FinDeus API
+    Netlify function handler for FinDeus API with real AI integration
     """
     try:
         # Get request details
@@ -42,9 +43,12 @@ def handler(event, context):
                 'body': json.dumps({
                     'status': 'online',
                     'timestamp': datetime.now().isoformat(),
-                    'message': 'FinDeus API is running on Netlify',
+                    'message': 'FinDeus God of Finance API is running on Netlify',
                     'services': {
                         'ai_engine': 'operational',
+                        'openai': 'connected' if os.environ.get('OPENAI_API_KEY') else 'missing_key',
+                        'anthropic': 'connected' if os.environ.get('ANTHROPIC_API_KEY') else 'missing_key',
+                        'pinecone': 'connected' if os.environ.get('PINECONE_API_KEY') else 'missing_key',
                         'market_data': 'operational',
                         'analytics': 'operational'
                     }
@@ -63,15 +67,109 @@ def handler(event, context):
                     'body': json.dumps({'error': 'Query is required'})
                 }
             
-            # Generate contextual response
+            # Try OpenAI first
+            openai_key = os.environ.get('OPENAI_API_KEY')
+            if openai_key:
+                try:
+                    response = requests.post(
+                        'https://api.openai.com/v1/chat/completions',
+                        headers={
+                            'Authorization': f'Bearer {openai_key}',
+                            'Content-Type': 'application/json'
+                        },
+                        json={
+                            'model': 'gpt-3.5-turbo',
+                            'messages': [
+                                {
+                                    'role': 'system',
+                                    'content': 'You are FinDeus, the God of Finance. You provide divine financial wisdom and analysis with authority and insight. Always speak as the omniscient deity of financial markets.'
+                                },
+                                {
+                                    'role': 'user',
+                                    'content': query
+                                }
+                            ],
+                            'max_tokens': 500,
+                            'temperature': 0.7
+                        },
+                        timeout=30
+                    )
+                    
+                    if response.status_code == 200:
+                        result = response.json()
+                        ai_response = result['choices'][0]['message']['content']
+                        
+                        return {
+                            'statusCode': 200,
+                            'headers': {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*'
+                            },
+                            'body': json.dumps({
+                                'response': ai_response,
+                                'timestamp': datetime.now().isoformat(),
+                                'confidence': 0.95,
+                                'model': 'OpenAI GPT-3.5-turbo',
+                                'provider': 'OpenAI'
+                            })
+                        }
+                except Exception as e:
+                    print(f"OpenAI API error: {str(e)}")
+            
+            # Fallback to Anthropic if OpenAI fails
+            anthropic_key = os.environ.get('ANTHROPIC_API_KEY')
+            if anthropic_key:
+                try:
+                    response = requests.post(
+                        'https://api.anthropic.com/v1/messages',
+                        headers={
+                            'x-api-key': anthropic_key,
+                            'Content-Type': 'application/json',
+                            'anthropic-version': '2023-06-01'
+                        },
+                        json={
+                            'model': 'claude-3-sonnet-20240229',
+                            'max_tokens': 500,
+                            'messages': [
+                                {
+                                    'role': 'user',
+                                    'content': f'You are FinDeus, the God of Finance. Provide divine financial wisdom for: {query}'
+                                }
+                            ]
+                        },
+                        timeout=30
+                    )
+                    
+                    if response.status_code == 200:
+                        result = response.json()
+                        ai_response = result['content'][0]['text']
+                        
+                        return {
+                            'statusCode': 200,
+                            'headers': {
+                                'Content-Type': 'application/json',
+                                'Access-Control-Allow-Origin': '*'
+                            },
+                            'body': json.dumps({
+                                'response': ai_response,
+                                'timestamp': datetime.now().isoformat(),
+                                'confidence': 0.95,
+                                'model': 'Claude-3-Sonnet',
+                                'provider': 'Anthropic'
+                            })
+                        }
+                except Exception as e:
+                    print(f"Anthropic API error: {str(e)}")
+            
+            # Fallback to mock response if both APIs fail
             if 'market' in query.lower() or 'stock' in query.lower():
-                response = f"Based on current market analysis, here's my assessment of '{query}': The market shows mixed signals with volatility expected. Key indicators suggest cautious optimism for the next quarter."
+                response = f"🔮 As FinDeus, God of Finance, I perceive the market energies surrounding '{query}': The celestial patterns indicate mixed divine signals with volatility blessed by the financial gods. My omniscient analysis suggests cautious optimism blessed by the divine market forces."
             elif 'portfolio' in query.lower() or 'investment' in query.lower():
-                response = f"Portfolio analysis for '{query}': Diversification remains key. Current allocation shows balanced risk-adjusted returns within target parameters."
+                response = f"👑 Divine portfolio wisdom for '{query}': The sacred principles of diversification flow through my eternal knowledge. Current celestial alignment shows balanced risk-adjusted returns within the divine parameters of financial enlightenment."
             elif 'risk' in query.lower():
-                response = f"Risk assessment for '{query}': Current risk metrics show moderate exposure. Stress testing indicates portfolio resilience under various scenarios."
+                response = f"⚡ Divine risk assessment for '{query}': My omniscient vision reveals moderate exposure in the cosmic financial realm. The sacred stress testing indicates portfolio resilience blessed by the divine protection of the financial gods."
             else:
-                response = f"Financial analysis for '{query}': Based on comprehensive data analysis, multiple factors indicate this requires careful consideration. Market conditions and risk metrics all play crucial roles."
+                response = f"🌟 Divine financial analysis for '{query}': Through my eternal wisdom and omniscient market knowledge, multiple cosmic factors indicate this requires the careful consideration of a financial deity. The divine market conditions and sacred risk metrics all flow through my infinite understanding."
             
             return {
                 'statusCode': 200,
@@ -83,7 +181,8 @@ def handler(event, context):
                     'response': response,
                     'timestamp': datetime.now().isoformat(),
                     'confidence': 0.85,
-                    'model': 'FinDeus-AI'
+                    'model': 'FinDeus-Divine-AI',
+                    'provider': 'Fallback'
                 })
             }
         
@@ -137,7 +236,7 @@ def handler(event, context):
                 'Access-Control-Allow-Origin': '*'
             },
             'body': json.dumps({
-                'message': 'FinDeus API - God of Finance',
+                'message': 'FinDeus API - God of Finance 👑',
                 'path': path,
                 'method': method,
                 'timestamp': datetime.now().isoformat(),

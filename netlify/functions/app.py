@@ -184,17 +184,23 @@ def handler(event, context):
                     })
                 }
         
-        # If no API route matches, return the HTML page
-        with open('index.html', 'r') as f:
-            html_content = f.read()
-        
+        # Default API response
         return {
             'statusCode': 200,
-            'headers': {
-                'Content-Type': 'text/html',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'body': html_content
+            'headers': headers,
+            'body': json.dumps({
+                'message': 'FinDeus API - God of Finance',
+                'status': 'divine',
+                'timestamp': datetime.now().isoformat(),
+                'path': path,
+                'method': method,
+                'available_endpoints': [
+                    '/api/health',
+                    '/api/ai/query',
+                    '/api/market/realtime/{symbol}',
+                    '/api/market/sentiment/{symbol}'
+                ]
+            })
         }
         
     except Exception as e:

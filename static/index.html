@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinDeus - AI Financial Intelligence Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease-in-out;
+        }
+        .typing-animation {
+            border-right: 2px solid #667eea;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: #667eea; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div x-data="findeusApp()">
+        <!-- Header -->
+        <header class="gradient-bg text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-brain text-3xl"></i>
+                        <h1 class="text-3xl font-bold">FinDeus</h1>
+                        <span class="text-sm bg-white/20 px-2 py-1 rounded">ASI Platform</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                            <span class="text-sm">Live</span>
+                        </div>
+                        <button @click="checkHealth()" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition">
+                            <i class="fas fa-heart-pulse mr-2"></i>Health Check
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Service Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- AI Query Engine -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-robot text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">AI Query Engine</h3>
+                            <p class="text-gray-600 text-sm">GPT-4 Financial Analysis</p>
+                        </div>
+                    </div>
+                    <button @click="activeTab = 'ai'" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition">
+                        Ask FinDeus
+                    </button>
+                </div>
+
+                <!-- Document Processing -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-file-text text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Document Processing</h3>
+                            <p class="text-gray-600 text-sm">RAG & Embeddings</p>
+                        </div>
+                    </div>
+                    <button @click="activeTab = 'documents'" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition">
+                        Process Documents
+                    </button>
+                </div>
+
+                <!-- Monte Carlo Simulation -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Monte Carlo</h3>
+                            <p class="text-gray-600 text-sm">Portfolio Simulation</p>
+                        </div>
+                    </div>
+                    <button @click="activeTab = 'monte-carlo'" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition">
+                        Run Simulation
+                    </button>
+                </div>
+
+                <!-- Startup Ideation -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-lightbulb text-yellow-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Startup Ideation</h3>
+                            <p class="text-gray-600 text-sm">AI-Powered Ideas</p>
+                        </div>
+                    </div>
+                    <button @click="activeTab = 'ideation'" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded-lg transition">
+                        Generate Ideas
+                    </button>
+                </div>
+
+                <!-- Knowledge Graph -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-project-diagram text-red-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Knowledge Graph</h3>
+                            <p class="text-gray-600 text-sm">Entity Relationships</p>
+                        </div>
+                    </div>
+                    <button @click="activeTab = 'graph'" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition">
+                        Explore Graph
+                    </button>
+                </div>
+
+                <!-- Health Status -->
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-heartbeat text-indigo-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">System Health</h3>
+                            <p class="text-gray-600 text-sm">Platform Status</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">APIs:</span>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-green-400 rounded-full" title="OpenAI"></div>
+                            <div class="w-3 h-3 bg-green-400 rounded-full" title="Pinecone"></div>
+                            <div class="w-3 h-3 bg-green-400 rounded-full" title="Web Server"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Tab Content -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <!-- AI Query Tab -->
+                <div x-show="activeTab === 'ai'" class="space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-robot text-blue-600 mr-2"></i>
+                        Ask FinDeus Anything
+                    </h2>
+                    <div class="flex space-x-4">
+                        <input 
+                            type="text" 
+                            x-model="aiQuery" 
+                            @keyup.enter="submitAiQuery()"
+                            placeholder="Ask me about investments, market analysis, financial strategies..."
+                            class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                        <button 
+                            @click="submitAiQuery()" 
+                            :disabled="loading"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition disabled:opacity-50"
+                        >
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            <span x-text="loading ? 'Thinking...' : 'Ask'"></span>
+                        </button>
+                    </div>
+                    <div x-show="aiResponse" class="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-2">FinDeus Response:</h4>
+                        <p x-text="aiResponse" class="text-gray-700 whitespace-pre-wrap"></p>
+                        <div x-show="aiTokens" class="mt-2 text-sm text-gray-500">
+                            <span x-text="'Tokens used: ' + aiTokens"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Processing Tab -->
+                <div x-show="activeTab === 'documents'" class="space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-file-text text-green-600 mr-2"></i>
+                        Document Processing & RAG
+                    </h2>
+                    <div class="space-y-4">
+                        <textarea 
+                            x-model="documentText" 
+                            placeholder="Paste your financial document content here..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent h-32"
+                        ></textarea>
+                        <button 
+                            @click="processDocument()" 
+                            :disabled="loading"
+                            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition disabled:opacity-50"
+                        >
+                            <i class="fas fa-cogs mr-2"></i>
+                            <span x-text="loading ? 'Processing...' : 'Generate Embeddings'"></span>
+                        </button>
+                    </div>
+                    <div x-show="embeddingResult" class="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-2">Embedding Generated:</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">Dimensions:</span>
+                                <span x-text="embeddingResult.dimensions" class="font-mono"></span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Tokens:</span>
+                                <span x-text="embeddingResult.tokens_used" class="font-mono"></span>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span class="text-gray-600">Sample values:</span>
+                            <code x-text="JSON.stringify(embeddingResult.embedding)" class="text-xs bg-gray-200 p-1 rounded"></code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monte Carlo Tab -->
+                <div x-show="activeTab === 'monte-carlo'" class="space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                        Monte Carlo Portfolio Simulation
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Portfolio Value ($)</label>
+                            <input 
+                                type="number" 
+                                x-model="portfolioValue" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                                value="100000"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Time Horizon (years)</label>
+                            <input 
+                                type="number" 
+                                x-model="timeHorizon" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                                value="1"
+                            >
+                        </div>
+                    </div>
+                    <button 
+                        @click="runMonteCarloSimulation()" 
+                        :disabled="loading"
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition disabled:opacity-50"
+                    >
+                        <i class="fas fa-play mr-2"></i>
+                        <span x-text="loading ? 'Running...' : 'Run 10,000 Scenarios'"></span>
+                    </button>
+                    <div x-show="monteCarloResult" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-800">Expected Return</h4>
+                            <p x-text="(monteCarloResult.expected_return * 100).toFixed(2) + '%'" class="text-2xl font-bold text-green-600"></p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-800">VaR (95%)</h4>
+                            <p x-text="(monteCarloResult.var_95 * 100).toFixed(2) + '%'" class="text-2xl font-bold text-red-600"></p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800">Recommendation</h4>
+                            <p x-text="monteCarloResult.recommendation" class="text-2xl font-bold text-blue-600"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ideation Tab -->
+                <div x-show="activeTab === 'ideation'" class="space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>
+                        AI Startup Ideation Engine
+                    </h2>
+                    <div class="flex space-x-4">
+                        <select x-model="ideationSector" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500">
+                            <option value="fintech">FinTech</option>
+                            <option value="healthtech">HealthTech</option>
+                            <option value="edtech">EdTech</option>
+                            <option value="cleantech">CleanTech</option>
+                            <option value="ai">AI/ML</option>
+                        </select>
+                        <button 
+                            @click="generateStartupIdeas()" 
+                            :disabled="loading"
+                            class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg transition disabled:opacity-50"
+                        >
+                            <i class="fas fa-magic mr-2"></i>
+                            <span x-text="loading ? 'Generating...' : 'Generate Ideas'"></span>
+                        </button>
+                    </div>
+                    <div x-show="startupIdeas" class="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-2">Generated Ideas:</h4>
+                        <div x-text="startupIdeas" class="text-gray-700 whitespace-pre-wrap"></div>
+                    </div>
+                </div>
+
+                <!-- Knowledge Graph Tab -->
+                <div x-show="activeTab === 'graph'" class="space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-project-diagram text-red-600 mr-2"></i>
+                        Knowledge Graph Explorer
+                    </h2>
+                    <button 
+                        @click="loadKnowledgeGraph()" 
+                        :disabled="loading"
+                        class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition disabled:opacity-50"
+                    >
+                        <i class="fas fa-search mr-2"></i>
+                        <span x-text="loading ? 'Loading...' : 'Load Financial Graph'"></span>
+                    </button>
+                    <div x-show="graphData" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Entities</h4>
+                            <template x-for="node in graphData.nodes" :key="node.id">
+                                <div class="flex items-center p-2 bg-white rounded mb-2">
+                                    <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                                    <div>
+                                        <span x-text="node.label" class="font-medium"></span>
+                                        <span x-text="'(' + node.type + ')'" class="text-sm text-gray-500 ml-2"></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-2">Relationships</h4>
+                            <template x-for="rel in graphData.relationships" :key="rel.from + rel.to">
+                                <div class="p-2 bg-white rounded mb-2">
+                                    <span x-text="rel.from" class="font-medium"></span>
+                                    <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                                    <span x-text="rel.type" class="text-sm bg-gray-200 px-2 py-1 rounded"></span>
+                                    <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                                    <span x-text="rel.to" class="font-medium"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <div class="flex items-center justify-center mb-4">
+                    <i class="fas fa-brain text-2xl mr-3"></i>
+                    <span class="text-xl font-bold">FinDeus ASI Platform</span>
+                </div>
+                <p class="text-gray-400">Advanced AI for Financial Intelligence & Business Innovation</p>
+                <div class="mt-4 flex justify-center space-x-6">
+                    <span class="text-sm text-gray-500">Powered by OpenAI GPT-4</span>
+                    <span class="text-sm text-gray-500">Vector Search Ready</span>
+                    <span class="text-sm text-gray-500">Real-time Analytics</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function findeusApp() {
+            return {
+                activeTab: 'ai',
+                loading: false,
+                
+                // AI Query
+                aiQuery: '',
+                aiResponse: '',
+                aiTokens: 0,
+                
+                // Document Processing
+                documentText: '',
+                embeddingResult: null,
+                
+                // Monte Carlo
+                portfolioValue: 100000,
+                timeHorizon: 1,
+                monteCarloResult: null,
+                
+                // Ideation
+                ideationSector: 'fintech',
+                startupIdeas: '',
+                
+                // Knowledge Graph
+                graphData: null,
+                
+                async submitAiQuery() {
+                    if (!this.aiQuery.trim()) return;
+                    
+                    this.loading = true;
+                    this.aiResponse = '';
+                    
+                    try {
+                        const response = await fetch('/api/ai/query', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                query: this.aiQuery
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            this.aiResponse = data.response;
+                            this.aiTokens = data.tokens_used;
+                        } else {
+                            this.aiResponse = 'Error: ' + data.error;
+                        }
+                    } catch (error) {
+                        this.aiResponse = 'Error: ' + error.message;
+                    }
+                    
+                    this.loading = false;
+                },
+                
+                async processDocument() {
+                    if (!this.documentText.trim()) return;
+                    
+                    this.loading = true;
+                    this.embeddingResult = null;
+                    
+                    try {
+                        const response = await fetch('/api/embeddings/generate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                text: this.documentText
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            this.embeddingResult = data;
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    } catch (error) {
+                        alert('Error: ' + error.message);
+                    }
+                    
+                    this.loading = false;
+                },
+                
+                async runMonteCarloSimulation() {
+                    this.loading = true;
+                    this.monteCarloResult = null;
+                    
+                    try {
+                        const response = await fetch('/api/finance/monte-carlo', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                portfolio_value: this.portfolioValue,
+                                years: this.timeHorizon
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            this.monteCarloResult = data;
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    } catch (error) {
+                        alert('Error: ' + error.message);
+                    }
+                    
+                    this.loading = false;
+                },
+                
+                async generateStartupIdeas() {
+                    this.loading = true;
+                    this.startupIdeas = '';
+                    
+                    try {
+                        const response = await fetch('/api/ideation/generate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                sector: this.ideationSector
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            this.startupIdeas = data.ideas;
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    } catch (error) {
+                        alert('Error: ' + error.message);
+                    }
+                    
+                    this.loading = false;
+                },
+                
+                async loadKnowledgeGraph() {
+                    this.loading = true;
+                    this.graphData = null;
+                    
+                    try {
+                        const response = await fetch('/api/graph/query', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                query: 'financial entities'
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (response.ok) {
+                            this.graphData = data.graph;
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    } catch (error) {
+                        alert('Error: ' + error.message);
+                    }
+                    
+                    this.loading = false;
+                },
+                
+                async checkHealth() {
+                    try {
+                        const response = await fetch('/api/health');
+                        const data = await response.json();
+                        
+                        let status = 'System Status:\n';
+                        status += `OpenAI: ${data.services.openai ? '✅ Connected' : '❌ Disconnected'}\n`;
+                        status += `Pinecone: ${data.services.pinecone ? '✅ Connected' : '❌ Disconnected'}\n`;
+                        status += `Web Server: ${data.services.web_server ? '✅ Running' : '❌ Down'}\n`;
+                        status += `Last Check: ${new Date(data.timestamp).toLocaleString()}`;
+                        
+                        alert(status);
+                    } catch (error) {
+                        alert('Health check failed: ' + error.message);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

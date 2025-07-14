@@ -1,0 +1,27 @@
+[build]
+  command = "pip install -r requirements.txt"
+  publish = "static"
+  
+[build.environment]
+  PYTHON_VERSION = "3.9"
+  FLASK_ENV = "production"
+  FLASK_DEBUG = "False"
+  
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/app/:splat"
+  status = 200
+  
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"
+  
+[dev]
+  command = "python web_app.py"
+  port = 8080
+  targetPort = 8080
+  publish = "static" 

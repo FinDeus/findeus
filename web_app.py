@@ -30,7 +30,8 @@ def load_env():
     return env_vars
 
 env_vars = load_env()
-OPENAI_API_KEY = env_vars.get('OPENAI_API_KEY', '')
+OPENAI_API_KEY = env_vars.get('OPENAI_API_KEY') or os.environ.get('OPENAI_API_KEY', '')
+ANTHROPIC_API_KEY = env_vars.get('ANTHROPIC_API_KEY') or os.environ.get('ANTHROPIC_API_KEY', '')
 
 @app.route('/')
 def index():

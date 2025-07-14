@@ -1,24 +1,14 @@
 [build]
-  command = "chmod +x build.sh && ./build.sh"
-  publish = "static"
+  command = "echo 'No build required for static site'"
+  publish = "."
 
 [build.environment]
-  PYTHON_VERSION = "3.11"
-
-[functions]
-  directory = "netlify/functions"
+  PYTHON_VERSION = "3.9"
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/app/:splat"
+  to = "/.netlify/functions/:splat"
   status = 200
-  force = true
-
-[[redirects]]
-  from = "/.netlify/functions/app/*"
-  to = "/.netlify/functions/app/:splat"
-  status = 200
-  force = true
 
 [[redirects]]
   from = "/*"

@@ -39,6 +39,10 @@ def handler(event, context):
         query_params = event.get('queryStringParameters') or {}
         body = event.get('body', '')
         
+        # Extract API path from query parameters if redirected
+        if 'path' in query_params:
+            path = '/api/' + query_params['path']
+        
         # Parse JSON body
         body_data = {}
         if body:
@@ -56,7 +60,8 @@ def handler(event, context):
                     'status': 'healthy',
                     'service': 'FinDeus God of Finance',
                     'timestamp': datetime.now().isoformat(),
-                    'version': '2.0.0'
+                    'version': '2.0.0',
+                    'openai_configured': bool(openai_key)
                 })
             }
         
@@ -179,21 +184,17 @@ def handler(event, context):
                     })
                 }
         
-        # Default response
+        # If no API route matches, return the HTML page
+        with open('index.html', 'r') as f:
+            html_content = f.read()
+        
         return {
             'statusCode': 200,
-            'headers': headers,
-            'body': json.dumps({
-                'message': 'FinDeus API - God of Finance',
-                'status': 'divine',
-                'timestamp': datetime.now().isoformat(),
-                'available_endpoints': [
-                    '/api/health',
-                    '/api/ai/query',
-                    '/api/market/realtime/{symbol}',
-                    '/api/market/sentiment/{symbol}'
-                ]
-            })
+            'headers': {
+                'Content-Type': 'text/html',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': html_content
         }
         
     except Exception as e:

@@ -14,7 +14,7 @@
 5. Select your `findeus` repository
 
 ### Step 2: Configure Build Settings
-- **Build command**: `echo 'No build required for static site'`
+- **Build command**: `echo 'Building FinDeus God of Finance'`
 - **Publish directory**: `.` (root directory)
 - **Functions directory**: `netlify/functions`
 
@@ -22,9 +22,9 @@
 In Netlify dashboard, go to Site settings → Environment variables and add:
 
 **Required API Keys:**
-- `OPENAI_API_KEY` = `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`
-- `ANTHROPIC_API_KEY` = `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`
-- `PINECONE_API_KEY` = `pcsk_5pzSVC_LDozAkXeNkEKP48vhnVB2FQkEv5dPD9yJAWpWvyiTzbVB5PHj7fitXxQ4YGEy37`
+- `OPENAI_API_KEY` = `your-openai-api-key-here`
+- `ANTHROPIC_API_KEY` = `your-anthropic-api-key-here`
+- `PINECONE_API_KEY` = `your-pinecone-api-key-here`
 - `PINECONE_ENVIRONMENT` = `gcp-starter`
 
 **Flask Configuration:**
@@ -48,15 +48,26 @@ In Netlify dashboard, go to Site settings → Environment variables and add:
 - ✅ Portfolio analysis
 - ✅ Risk assessment
 - ✅ Pinecone vector database integration
-- ✅ Serverless functions for API endpoints
-- ✅ Automatic HTTPS
-- ✅ Global CDN distribution
 
-## 🛠️ Troubleshooting
-- If functions fail, check environment variables are set correctly
-- Check function logs in Netlify dashboard
-- Ensure all API keys are valid and have proper permissions
-- Verify Pinecone environment is set correctly
+## 🔑 Getting New API Keys
 
-## 📱 Access Your Live Site
-Once deployed with the API keys, your FinDeus God of Finance platform will be live with full AI capabilities at your Netlify URL! 
+### OpenAI API Key
+1. Go to [platform.openai.com](https://platform.openai.com)
+2. Sign in or create an account
+3. Navigate to API Keys section
+4. Click "Create new secret key"
+5. Copy the key and add it to Netlify environment variables
+
+### Anthropic API Key
+1. Go to [console.anthropic.com](https://console.anthropic.com)
+2. Sign in or create an account
+3. Navigate to API Keys
+4. Create a new key
+5. Copy and add to Netlify environment variables
+
+### Pinecone API Key
+1. Go to [pinecone.io](https://pinecone.io)
+2. Sign in or create an account
+3. Navigate to API Keys
+4. Create a new key
+5. Copy and add to Netlify environment variables 

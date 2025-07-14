@@ -10,118 +10,232 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
             background: #000000;
             color: #ffffff;
             overflow-x: hidden;
+            line-height: 1.6;
         }
         
-        .gradient-text {
-            background: linear-gradient(135deg, #00D4FF 0%, #FF6B6B 50%, #4ECDC4 100%);
+        .xai-gradient {
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            transition: all 0.3s ease;
+        .xai-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .neural-bg {
-            background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 40% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
-        }
-        
-        .typing-cursor {
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        
-        .pulse-ring {
-            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
-        }
-        
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); opacity: 1; }
-            80%, 100% { transform: scale(1.2); opacity: 0; }
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .glow-button {
-            position: relative;
-            background: linear-gradient(135deg, #00D4FF 0%, #FF6B6B 100%);
-            border: none;
-            color: white;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .glow-button:hover {
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        .xai-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
             transform: translateY(-1px);
         }
         
-        .command-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        
-        .command-input:focus {
+        .xai-button {
             background: rgba(255, 255, 255, 0.08);
-            border-color: #00D4FF;
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .command-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+        .xai-button:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
         }
         
-        .metric-card {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+        .xai-button-primary {
+            background: #ffffff;
+            color: #000000;
+            border: 1px solid #ffffff;
+        }
+        
+        .xai-button-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .xai-input {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .xai-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        
+        .xai-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 300;
+            opacity: 0.7;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            padding: 2rem;
+            text-align: left;
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 24px;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .terminal-container {
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
         }
         
-        .metric-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca3f; }
+        
+        .terminal-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .terminal-prompt {
+            color: #00ff88;
+            font-weight: 600;
+        }
+        
+        .terminal-command {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 16px;
+            flex: 1;
+            outline: none;
+        }
+        
+        .terminal-output {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
         }
         
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
+            background: #00ff88;
             border-radius: 50%;
-            background: #00FF88;
             animation: pulse 2s infinite;
         }
         
@@ -130,355 +244,286 @@
             50% { opacity: 0.5; }
         }
         
-        .nav-item {
-            padding: 12px 24px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 1000;
+            padding: 1rem 2rem;
         }
         
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
-        .nav-item.active {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: rgba(0, 212, 255, 0.3);
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 600;
         }
         
-        .response-container {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 24px;
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
         
-        .loading-dots {
+        .loading-spinner {
             display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s linear infinite;
         }
         
-        .loading-dots::after {
-            content: '';
-            animation: dots 1.5s steps(4, end) infinite;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
-        @keyframes dots {
-            0%, 20% { content: ''; }
-            40% { content: '.'; }
-            60% { content: '..'; }
-            80%, 100% { content: '...'; }
+        .module-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         
-        .hero-title {
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
+        .module-header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
         
-        .subtitle {
-            font-size: clamp(1.1rem, 3vw, 1.5rem);
+        .module-title {
+            font-size: 2.5rem;
             font-weight: 300;
-            opacity: 0.8;
+            margin-bottom: 1rem;
         }
         
-        .section-title {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            font-weight: 700;
-            margin-bottom: 2rem;
+        .module-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .module-content {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #00ff88;
         }
     </style>
 </head>
-<body class="neural-bg">
+<body>
     <div x-data="findeusApp()">
-        <!-- Header -->
-        <header class="fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/10">
-            <div class="container mx-auto px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
-                                </svg>
-                            </div>
-                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full pulse-ring"></div>
-                        </div>
-                        <div>
-                            <h1 class="text-xl font-bold gradient-text">FinDeus</h1>
-                            <p class="text-xs text-gray-400">God of Finance</p>
-                        </div>
+        <!-- Navigation -->
+        <nav class="nav-header">
+            <div class="nav-content">
+                <div class="nav-logo">
+                    <span class="xai-gradient">FinDeus</span>
+                </div>
+                <div class="nav-actions">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>Live</span>
                     </div>
-                    <div class="flex items-center space-x-6">
-                        <div class="flex items-center space-x-2">
-                            <div class="status-dot"></div>
-                            <span class="text-sm text-gray-300">Live</span>
-                        </div>
-                        <button @click="checkHealth()" class="nav-item text-sm">
-                            System Status
-                        </button>
-                    </div>
+                    <button @click="checkHealth()" class="xai-button">
+                        System Status
+                    </button>
                 </div>
             </div>
-        </header>
+        </nav>
 
         <!-- Main Content -->
-        <main class="pt-24 min-h-screen">
+        <main>
             <!-- Hero Section -->
-            <section class="container mx-auto px-6 py-16 text-center">
-                <div class="max-w-4xl mx-auto">
-                    <h1 class="hero-title gradient-text mb-6 floating">
-                        The God of Finance
+            <section class="hero-section">
+                <div>
+                    <h1 class="hero-title">
+                        <span class="xai-gradient">FinDeus</span>
                     </h1>
-                    <p class="subtitle text-gray-300 mb-12 max-w-2xl mx-auto">
-                        Unleash the power of artificial superintelligence for financial dominance. 
-                        Advanced AI models, quantum analysis, and real-time market intelligence at your command.
+                    <p class="hero-subtitle">
+                        Advanced AI for financial intelligence and market analysis
                     </p>
                     
-                    <!-- Command Interface -->
-                    <div class="max-w-3xl mx-auto mb-16">
-                        <div class="glass-card p-8">
-                            <div class="flex items-center space-x-4 mb-6">
-                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                <span class="text-sm text-gray-400 ml-4">FinDeus Terminal</span>
-                            </div>
-                            
-                            <div class="flex items-center space-x-4">
-                                <span class="text-green-400 font-mono">$</span>
-                                <input 
-                                    type="text" 
-                                    x-model="aiQuery" 
-                                    @keyup.enter="submitAiQuery()"
-                                    placeholder="Ask the God of Finance anything..."
-                                    class="flex-1 bg-transparent border-none outline-none text-white font-mono text-lg command-input"
-                                    :disabled="loading"
-                                >
-                                <button 
-                                    @click="submitAiQuery()" 
-                                    :disabled="loading || !aiQuery.trim()"
-                                    class="glow-button px-6 py-3 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    <span x-show="!loading">Execute</span>
-                                    <span x-show="loading" class="loading-dots">Processing</span>
-                                </button>
-                            </div>
-                            
-                            <div x-show="aiResponse" class="response-container">
-                                <div class="flex items-center space-x-2 mb-4">
-                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                                    <span class="text-sm text-gray-400">FinDeus Response</span>
-                                </div>
-                                <div x-text="aiResponse" class="text-gray-100 whitespace-pre-wrap font-mono text-sm leading-relaxed"></div>
-                            </div>
+                    <!-- Terminal Interface -->
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <div class="terminal-dot red"></div>
+                            <div class="terminal-dot yellow"></div>
+                            <div class="terminal-dot green"></div>
+                            <span style="margin-left: 12px; font-size: 14px; opacity: 0.7;">FinDeus Terminal</span>
                         </div>
+                        
+                        <div class="terminal-input">
+                            <span class="terminal-prompt">$</span>
+                            <input 
+                                type="text" 
+                                x-model="aiQuery" 
+                                @keyup.enter="submitAiQuery()"
+                                placeholder="Ask about markets, analysis, or financial strategies..."
+                                class="terminal-command"
+                                :disabled="loading"
+                            >
+                            <button 
+                                @click="submitAiQuery()" 
+                                :disabled="loading || !aiQuery.trim()"
+                                class="xai-button-primary"
+                            >
+                                <span x-show="!loading">Execute</span>
+                                <span x-show="loading" class="loading-spinner"></span>
+                            </button>
+                        </div>
+                        
+                        <div x-show="aiResponse" class="terminal-output" x-text="aiResponse"></div>
                     </div>
                 </div>
             </section>
 
-            <!-- Capabilities Grid -->
-            <section class="container mx-auto px-6 py-16">
-                <h2 class="section-title gradient-text text-center mb-16">
-                    Superintelligence Capabilities
-                </h2>
+            <!-- Features Section -->
+            <section class="module-section">
+                <div class="module-header">
+                    <h2 class="module-title">
+                        <span class="xai-gradient">Capabilities</span>
+                    </h2>
+                    <p class="module-subtitle">
+                        Advanced AI-powered financial analysis and market intelligence
+                    </p>
+                </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- AI Analysis -->
-                <div class="glass-card p-8 cursor-pointer" @click="activeTab = 'ai'">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Neural Analysis</h3>
-                            <p class="text-gray-400 text-sm">GPT-4 & Claude Integration</p>
-                        </div>
+                <div class="features-grid">
+                    <!-- AI Analysis -->
+                    <div class="xai-card feature-card" @click="activeTab = 'ai'">
+                        <div class="feature-icon">🧠</div>
+                        <h3 class="feature-title">AI Analysis</h3>
+                        <p class="feature-description">
+                            Advanced language models for financial analysis, market insights, and strategic recommendations.
+                        </p>
                     </div>
-                    <p class="text-gray-300 mb-4">
-                        Advanced AI models analyze market patterns, financial data, and economic indicators with superhuman precision.
-                    </p>
-                    <div class="flex items-center text-blue-400 text-sm font-semibold">
-                        <span>Activate Neural Core</span>
-                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
-                    </div>
-                </div>
 
-                <!-- Market Intelligence -->
-                <div class="glass-card p-8 cursor-pointer" @click="activeTab = 'market'">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Market Oracle</h3>
-                            <p class="text-gray-400 text-sm">Real-time Data & Predictions</p>
-                        </div>
+                    <!-- Market Data -->
+                    <div class="xai-card feature-card" @click="activeTab = 'market'">
+                        <div class="feature-icon">📈</div>
+                        <h3 class="feature-title">Market Data</h3>
+                        <p class="feature-description">
+                            Real-time market data, price analysis, and sentiment tracking for informed decision making.
+                        </p>
                     </div>
-                    <p class="text-gray-300 mb-4">
-                        Live market data, sentiment analysis, and predictive modeling for superior trading decisions.
-                    </p>
-                    <div class="flex items-center text-green-400 text-sm font-semibold">
-                        <span>Access Market Data</span>
-                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
-                    </div>
-                </div>
 
-                <!-- Risk Management -->
-                <div class="glass-card p-8 cursor-pointer" @click="activeTab = 'risk'">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 1L3 5v6c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V5l-9-4z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Risk Guardian</h3>
-                            <p class="text-gray-400 text-sm">Monte Carlo & VaR Analysis</p>
-                        </div>
+                    <!-- Risk Analysis -->
+                    <div class="xai-card feature-card" @click="activeTab = 'risk'">
+                        <div class="feature-icon">🛡️</div>
+                        <h3 class="feature-title">Risk Analysis</h3>
+                        <p class="feature-description">
+                            Advanced risk modeling with Monte Carlo simulations and Value-at-Risk calculations.
+                        </p>
                     </div>
-                    <p class="text-gray-300 mb-4">
-                        Advanced risk modeling with Monte Carlo simulations and Value-at-Risk calculations.
-                    </p>
-                    <div class="flex items-center text-red-400 text-sm font-semibold">
-                        <span>Analyze Risk</span>
-                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
-                    </div>
-                </div>
 
-                <!-- Portfolio Optimization -->
-                <div class="glass-card p-8 cursor-pointer" @click="activeTab = 'portfolio'">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M9 11H7v9h2v-9zm4-4H11v13h2V7zm4-4H15v17h2V3z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Portfolio Architect</h3>
-                            <p class="text-gray-400 text-sm">Optimization & Allocation</p>
-                        </div>
+                    <!-- Portfolio Management -->
+                    <div class="xai-card feature-card" @click="activeTab = 'portfolio'">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Portfolio Management</h3>
+                        <p class="feature-description">
+                            Intelligent portfolio optimization using modern portfolio theory and machine learning.
+                        </p>
                     </div>
-                    <p class="text-gray-300 mb-4">
-                        Intelligent portfolio construction with modern portfolio theory and machine learning.
-                    </p>
-                    <div class="flex items-center text-purple-400 text-sm font-semibold">
-                        <span>Optimize Portfolio</span>
-                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
-                    </div>
-                </div>
 
-                <!-- Document Intelligence -->
-                <div class="glass-card p-8 cursor-pointer" @click="activeTab = 'documents'">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Document Oracle</h3>
-                            <p class="text-gray-400 text-sm">RAG & Semantic Search</p>
-                        </div>
+                    <!-- Document Analysis -->
+                    <div class="xai-card feature-card" @click="activeTab = 'documents'">
+                        <div class="feature-icon">📄</div>
+                        <h3 class="feature-title">Document Analysis</h3>
+                        <p class="feature-description">
+                            Extract insights from financial documents using advanced embeddings and semantic search.
+                        </p>
                     </div>
-                    <p class="text-gray-300 mb-4">
-                        Extract insights from financial documents using advanced embeddings and retrieval systems.
-                    </p>
-                    <div class="flex items-center text-yellow-400 text-sm font-semibold">
-                        <span>Process Documents</span>
-                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
-                    </div>
-                </div>
 
-                <!-- Knowledge Graph -->
-                <div class="glass-card p-8 cursor-pointer" @click="activeTab = 'graph'">
-                    <div class="flex items-center space-x-4 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Knowledge Web</h3>
-                            <p class="text-gray-400 text-sm">Entity Relationships</p>
-                        </div>
+                    <!-- Knowledge Graph -->
+                    <div class="xai-card feature-card" @click="activeTab = 'graph'">
+                        <div class="feature-icon">🔗</div>
+                        <h3 class="feature-title">Knowledge Graph</h3>
+                        <p class="feature-description">
+                            Explore complex financial relationships through intelligent knowledge graph visualization.
+                        </p>
                     </div>
-                    <p class="text-gray-300 mb-4">
-                        Explore complex financial relationships through intelligent knowledge graph visualization.
-                    </p>
-                    <div class="flex items-center text-teal-400 text-sm font-semibold">
-                        <span>Explore Graph</span>
-                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                        </svg>
-                    </div>
-                </div>
                 </div>
             </section>
 
             <!-- Active Module Content -->
-            <section x-show="activeTab !== 'ai'" class="container mx-auto px-6 py-16">
-                <div class="max-w-4xl mx-auto">
-                    <div class="glass-card p-8">
-                        <!-- Market Module -->
-                        <div x-show="activeTab === 'market'" class="space-y-6">
-                            <h2 class="text-2xl font-bold gradient-text mb-6">Market Oracle</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-300 mb-2">Stock Symbol</label>
-                                    <input 
-                                        type="text" 
-                                        x-model="stockSymbol" 
-                                        placeholder="AAPL, TSLA, MSFT..."
-                                        class="w-full px-4 py-3 command-input rounded-lg"
-                                        value="AAPL"
-                                    >
-                                </div>
-                                <div class="flex items-end">
-                                    <button 
-                                        @click="getMarketData()" 
-                                        :disabled="loading"
-                                        class="glow-button px-6 py-3 rounded-lg font-semibold disabled:opacity-50 w-full"
-                                    >
-                                        <span x-show="!loading">Analyze Market</span>
-                                        <span x-show="loading" class="loading-dots">Analyzing</span>
-                                    </button>
-                                </div>
+            <section x-show="activeTab !== 'ai'" class="module-section">
+                <div class="module-content">
+                    <!-- Market Module -->
+                    <div x-show="activeTab === 'market'">
+                        <h2 class="module-title">Market Data</h2>
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end; margin-bottom: 2rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Stock Symbol</label>
+                                <input 
+                                    type="text" 
+                                    x-model="stockSymbol" 
+                                    placeholder="AAPL, TSLA, MSFT..."
+                                    class="xai-input"
+                                    value="AAPL"
+                                >
                             </div>
-                            <div x-show="marketData" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                                <div class="metric-card">
-                                    <h4 class="text-lg font-semibold text-gray-200">Current Price</h4>
-                                    <p x-text="marketData?.price ? '$' + marketData.price.toFixed(2) : 'N/A'" class="text-2xl font-bold text-green-400"></p>
-                                </div>
-                                <div class="metric-card">
-                                    <h4 class="text-lg font-semibold text-gray-200">Change</h4>
-                                    <p x-text="marketData?.change ? (marketData.change > 0 ? '+' : '') + marketData.change.toFixed(2) : 'N/A'" 
-                                       :class="marketData?.change > 0 ? 'text-green-400' : 'text-red-400'" 
-                                       class="text-2xl font-bold"></p>
-                                </div>
-                                <div class="metric-card">
-                                    <h4 class="text-lg font-semibold text-gray-200">Volume</h4>
-                                    <p x-text="marketData?.volume ? marketData.volume.toLocaleString() : 'N/A'" class="text-2xl font-bold text-blue-400"></p>
-                                </div>
+                            <button 
+                                @click="getMarketData()" 
+                                :disabled="loading"
+                                class="xai-button-primary"
+                            >
+                                <span x-show="!loading">Analyze</span>
+                                <span x-show="loading" class="loading-spinner"></span>
+                            </button>
+                        </div>
+                        <div x-show="marketData" class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-label">Current Price</div>
+                                <div class="metric-value" x-text="marketData?.price ? '$' + marketData.price.toFixed(2) : 'N/A'"></div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">Change</div>
+                                <div class="metric-value" x-text="marketData?.change ? (marketData.change > 0 ? '+' : '') + marketData.change.toFixed(2) : 'N/A'"></div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">Volume</div>
+                                <div class="metric-value" x-text="marketData?.volume ? marketData.volume.toLocaleString() : 'N/A'"></div>
                             </div>
                         </div>
+                    </div>
 
                         <!-- Documents Module -->
                         <div x-show="activeTab === 'documents'" class="space-y-6">
@@ -632,25 +677,19 @@
         </main>
 
         <!-- Footer -->
-        <footer class="border-t border-white/10 py-12">
-            <div class="container mx-auto px-6 text-center">
-                <div class="flex items-center justify-center mb-6">
-                    <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg flex items-center justify-center mr-3">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold gradient-text">FinDeus</span>
+        <footer style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding: 3rem 2rem; text-align: center;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <div style="margin-bottom: 2rem;">
+                    <span style="font-size: 1.5rem; font-weight: 600;" class="xai-gradient">FinDeus</span>
                 </div>
-                <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
-                    The ultimate artificial superintelligence for financial dominance. 
-                    Powered by advanced AI models and quantum-inspired algorithms.
+                <p style="opacity: 0.7; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Advanced AI for financial intelligence and market analysis
                 </p>
-                <div class="flex justify-center space-x-8 text-sm text-gray-500">
+                <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; font-size: 0.875rem; opacity: 0.5;">
                     <span>Powered by GPT-4 & Claude</span>
                     <span>Real-time Market Data</span>
                     <span>Advanced Risk Analytics</span>
-                    <span>Quantum-Inspired AI</span>
+                    <span>AI-Powered Insights</span>
                 </div>
             </div>
         </footer>

@@ -5,15 +5,22 @@
 
 echo "🚀 Starting FinDeus build process..."
 
+# Check Python version
+echo "🐍 Checking Python version..."
+python3 --version || python --version
+
 # Set up Python environment
+echo "📦 Setting up Python environment..."
+python3 -m pip install --upgrade pip || pip install --upgrade pip
+
+# Install main dependencies
 echo "📦 Installing Python dependencies..."
-python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt || pip install -r requirements.txt
 
 # Install function dependencies
 echo "⚡ Installing Netlify function dependencies..."
 if [ -f "netlify/functions/requirements.txt" ]; then
-    python3 -m pip install -r netlify/functions/requirements.txt
+    python3 -m pip install -r netlify/functions/requirements.txt || pip install -r netlify/functions/requirements.txt
 fi
 
 # Verify static files exist

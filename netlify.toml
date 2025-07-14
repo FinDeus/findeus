@@ -2,9 +2,6 @@
   command = "chmod +x build.sh && ./build.sh"
   publish = "static"
 
-[build.environment]
-  PYTHON_VERSION = "3.9"
-
 [functions]
   directory = "netlify/functions"
 

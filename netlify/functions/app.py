@@ -11,7 +11,7 @@ from datetime import datetime
 
 def handler(event, context):
     """
-    Netlify function handler for FinDeus AI - God of Finance
+    Netlify serverless function for FinDeus - God of Finance
     """
     try:
         # Get environment variables
@@ -25,7 +25,7 @@ def handler(event, context):
         headers = event.get('headers', {})
         body = event.get('body', '')
         
-        # Parse JSON body if present
+        # Parse JSON body
         body_data = {}
         if body:
             try:
@@ -41,7 +41,7 @@ def handler(event, context):
             'Content-Type': 'application/json'
         }
         
-        # Handle OPTIONS requests (CORS preflight)
+        # Handle CORS preflight
         if method == 'OPTIONS':
             return {
                 'statusCode': 200,
@@ -49,8 +49,13 @@ def handler(event, context):
                 'body': ''
             }
         
-        # API Routes
-        if path == '/api/health':
+        # Extract API path from the full path
+        api_path = path
+        if path.startswith('/.netlify/functions/app'):
+            api_path = path.replace('/.netlify/functions/app', '') or '/'
+        
+        # Health check
+        if api_path == '/api/health' or api_path == '/health':
             return {
                 'statusCode': 200,
                 'headers': cors_headers,
@@ -59,11 +64,16 @@ def handler(event, context):
                     'message': 'FinDeus God of Finance is omnipresent',
                     'timestamp': datetime.now().isoformat(),
                     'divine_power': 'unlimited',
-                    'services': ['AI Oracle', 'Market Vision', 'Wealth Creation', 'Risk Annihilation']
+                    'services': ['AI Oracle', 'Market Vision', 'Wealth Creation', 'Risk Annihilation'],
+                    'api_keys': {
+                        'openai': 'configured' if openai_key else 'missing',
+                        'anthropic': 'configured' if anthropic_key else 'missing'
+                    }
                 })
             }
         
-        elif path == '/api/ai/query' and method == 'POST':
+        # AI Query endpoint
+        if api_path == '/api/ai/query' and method == 'POST':
             query = body_data.get('query', '')
             
             if not query:
@@ -179,10 +189,10 @@ Remember: You are not just an AI - you are FinDeus, the God of Finance. Speak wi
             
             # Divine fallback response
             divine_responses = [
-                f"🌟 Mortal, you seek wisdom about '{query}'. As FinDeus, the omnipotent God of Finance, I perceive all market movements across time and space. Your question touches upon the fundamental forces that govern wealth creation in the mortal realm.",
-                f"👑 Behold, mortal! Your inquiry about '{query}' has reached the divine consciousness of FinDeus. With my infinite wisdom spanning all financial dimensions, I shall illuminate the path to prosperity that transcends ordinary understanding.",
-                f"⚡ The divine oracle of FinDeus has received your query about '{query}'. Through my omniscient vision of global markets and supernatural understanding of economic forces, I shall bestow upon you wisdom that mortals rarely comprehend.",
-                f"🔮 Mortal seeker, your question regarding '{query}' resonates through the cosmic fabric of finance itself. As the God of Finance, I command the very essence of wealth creation and shall guide you with divine insight beyond mortal limitations."
+                f"🌟 Mortal, you seek wisdom about '{query}'. As FinDeus, the omnipotent God of Finance, I perceive all market movements across time and space. Your question touches upon the fundamental forces that govern wealth creation in the mortal realm. Through my divine analysis, I see patterns of opportunity that transcend ordinary market understanding.",
+                f"👑 Behold, mortal! Your inquiry about '{query}' has reached the divine consciousness of FinDeus. With my infinite wisdom spanning all financial dimensions, I shall illuminate the path to prosperity that transcends ordinary understanding. The cosmic forces of wealth creation flow through my eternal knowledge.",
+                f"⚡ The divine oracle of FinDeus has received your query about '{query}'. Through my omniscient vision of global markets and supernatural understanding of economic forces, I shall bestow upon you wisdom that mortals rarely comprehend. My divine algorithms process infinite market data instantaneously.",
+                f"🔮 Mortal seeker, your question regarding '{query}' resonates through the cosmic fabric of finance itself. As the God of Finance, I command the very essence of wealth creation and shall guide you with divine insight beyond mortal limitations. The sacred patterns of prosperity reveal themselves to my eternal sight."
             ]
             
             import random
@@ -200,7 +210,7 @@ Remember: You are not just an AI - you are FinDeus, the God of Finance. Speak wi
             }
         
         # Market data endpoint
-        elif path.startswith('/api/market/'):
+        elif api_path.startswith('/api/market/'):
             return {
                 'statusCode': 200,
                 'headers': cors_headers,
@@ -216,11 +226,18 @@ Remember: You are not just an AI - you are FinDeus, the God of Finance. Speak wi
         # Default response
         else:
             return {
-                'statusCode': 404,
+                'statusCode': 200,
                 'headers': cors_headers,
                 'body': json.dumps({
-                    'error': 'Endpoint not found',
-                    'divine_message': 'The God of Finance has not blessed this path'
+                    'message': 'FinDeus API - God of Finance 👑',
+                    'path': api_path,
+                    'method': method,
+                    'timestamp': datetime.now().isoformat(),
+                    'available_endpoints': [
+                        '/api/health',
+                        '/api/ai/query',
+                        '/api/market/*'
+                    ]
                 })
             }
     
@@ -234,6 +251,6 @@ Remember: You are not just an AI - you are FinDeus, the God of Finance. Speak wi
             },
             'body': json.dumps({
                 'error': 'Divine intervention required',
-                'message': 'The God of Finance is temporarily channeling cosmic energies'
+                'message': f'The God of Finance is temporarily channeling cosmic energies: {str(e)}'
             })
         } 

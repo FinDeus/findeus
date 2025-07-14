@@ -67,6 +67,11 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Root package.json (conflicts with Netlify Python build)
+/package.json
 
 # Build outputs
 dist/

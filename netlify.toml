@@ -1,5 +1,6 @@
 [build]
-  command = "pip install -r requirements.txt"
+  base = "."
+  command = "chmod +x build.sh && ./build.sh"
   publish = "static"
   
 [build.environment]

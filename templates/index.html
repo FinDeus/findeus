@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinDeus - God of Finance</title>
+    <title>FinDeus - Financial Intelligence</title>
     <style>
         * {
             margin: 0;
@@ -12,52 +12,13 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: #000;
-            color: #fff;
-            line-height: 1.5;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Divine Background Effects */
-        .divine-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 140, 0, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 70%),
-                linear-gradient(135deg, #000 0%, #0a0a0a 100%);
-            z-index: -1;
-        }
-
-        .divine-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #ffd700;
-            border-radius: 50%;
-            animation: float 6s infinite ease-in-out;
-            opacity: 0.6;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Header */
@@ -66,9 +27,9 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 1000;
             padding: 16px 0;
         }
@@ -83,738 +44,690 @@
         }
 
         .logo {
-            font-size: 32px;
-            font-weight: 800;
+            font-size: 24px;
+            font-weight: 600;
             letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #ffd700 0%, #ffb347 50%, #ffd700 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            position: relative;
+            color: #ffffff;
         }
 
-        .logo::after {
-            content: '⚡';
-            position: absolute;
-            right: -25px;
-            top: -5px;
-            font-size: 20px;
-            animation: divine-pulse 2s infinite;
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
         }
 
-        @keyframes divine-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
         }
 
-        .status-badge {
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        .status-indicator {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 25px;
             font-size: 14px;
-            font-weight: 600;
-            color: #ffd700;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .status-dot {
             width: 8px;
             height: 8px;
-            background: #ffd700;
+            background: #00ff00;
             border-radius: 50%;
-            animation: divine-glow 2s infinite;
-            box-shadow: 0 0 10px #ffd700;
+            animation: pulse 2s infinite;
         }
 
-        @keyframes divine-glow {
-            0%, 100% { opacity: 1; box-shadow: 0 0 10px #ffd700; }
-            50% { opacity: 0.7; box-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         /* Main Content */
         .main {
-            margin-top: 80px;
+            padding-top: 80px;
             min-height: 100vh;
         }
 
-        /* Hero Section */
         .hero {
-            padding: 120px 0 80px;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            filter: blur(40px);
-        }
-
-        .hero-content {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
+            padding: 80px 24px 40px;
+            text-align: center;
         }
 
         .hero h1 {
-            font-size: clamp(60px, 10vw, 96px);
-            font-weight: 900;
-            letter-spacing: -0.04em;
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1.1;
             margin-bottom: 24px;
-            background: linear-gradient(135deg, #ffd700 0%, #fff 20%, #ffd700 40%, #ffb347 60%, #ffd700 80%, #fff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
-            position: relative;
-            animation: title-glow 3s ease-in-out infinite;
-        }
-
-        @keyframes title-glow {
-            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3)); }
-            50% { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.6)); }
-        }
-
-        .hero .subtitle {
-            font-size: 24px;
-            color: rgba(255, 215, 0, 0.9);
-            margin-bottom: 16px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: -0.03em;
         }
 
         .hero p {
             font-size: 20px;
             color: rgba(255, 255, 255, 0.8);
             margin-bottom: 48px;
-            max-width: 700px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            font-weight: 400;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ffffff;
+            color: #000000;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            border: 2px solid #ffffff;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: #ffffff;
+        }
+
+        .secondary-button {
+            display: inline-block;
+            background: transparent;
+            color: #ffffff;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-left: 16px;
+        }
+
+        .secondary-button:hover {
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Terminal Interface */
+        .terminal {
+            max-width: 800px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+        }
+
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca3f; }
+
+        .terminal-title {
+            margin-left: 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .terminal-body {
+            padding: 24px;
+            min-height: 300px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .terminal-prompt {
+            color: rgba(255, 255, 255, 0.6);
+            margin-right: 8px;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            outline: none;
+            font-family: inherit;
+            font-size: inherit;
+            flex: 1;
+            padding: 8px 0;
+        }
+
+        .terminal-output {
+            color: rgba(255, 255, 255, 0.8);
+            margin-left: 16px;
+            white-space: pre-wrap;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 20px;
+            background: #ffffff;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Features Grid */
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 24px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.8);
             line-height: 1.6;
         }
 
-        /* Divine Chat Interface */
-        .chat-section {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px 80px;
-        }
-
-        .chat-container {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
+        /* AI Chat Interface */
+        .ai-chat {
+            max-width: 800px;
+            margin: 60px auto;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             overflow: hidden;
-            backdrop-filter: blur(20px);
-            box-shadow: 
-                0 0 50px rgba(255, 215, 0, 0.2),
-                inset 0 1px 0 rgba(255, 215, 0, 0.1);
         }
 
         .chat-header {
-            padding: 24px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-            background: rgba(255, 215, 0, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .chat-header h2 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffd700;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .chat-header h2::before {
-            content: '👑';
-            font-size: 24px;
-            animation: crown-rotate 4s linear infinite;
+        .chat-status {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
 
-        @keyframes crown-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .chat-title {
+            font-weight: 600;
+            font-size: 16px;
         }
 
         .chat-messages {
-            max-height: 500px;
+            height: 400px;
             overflow-y: auto;
-            padding: 32px;
-            min-height: 300px;
-            background: rgba(0, 0, 0, 0.3);
+            padding: 24px;
         }
 
         .message {
-            margin-bottom: 32px;
+            margin-bottom: 16px;
             display: flex;
-            gap: 16px;
-            animation: message-appear 0.5s ease-out;
-        }
-
-        @keyframes message-appear {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            align-items: flex-start;
+            gap: 12px;
         }
 
         .message.user {
             flex-direction: row-reverse;
         }
 
+        .message-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 70%;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         .message-avatar {
-            width: 48px;
-            height: 48px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            font-weight: 700;
             flex-shrink: 0;
-            color: #000;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-        }
-
-        .message.user .message-avatar {
-            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
-            color: #fff;
-            box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
-        }
-
-        .message-content {
-            flex: 1;
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 16px;
-            padding: 20px;
-            font-size: 16px;
-            line-height: 1.6;
-            position: relative;
-        }
-
-        .message.user .message-content {
-            background: rgba(74, 144, 226, 0.1);
-            border-color: rgba(74, 144, 226, 0.3);
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: rgba(255, 215, 0, 0.6);
-            margin-top: 12px;
-            font-weight: 500;
-        }
-
-        .message.user .message-time {
-            color: rgba(74, 144, 226, 0.8);
         }
 
         .chat-input-container {
-            padding: 32px;
-            border-top: 1px solid rgba(255, 215, 0, 0.2);
-            background: rgba(255, 215, 0, 0.02);
-            position: relative;
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 12px;
         }
 
         .chat-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 16px;
-            padding: 20px 80px 20px 24px;
-            color: #fff;
-            font-size: 16px;
-            font-family: inherit;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #ffffff;
+            font-size: 14px;
             outline: none;
-            transition: all 0.3s ease;
-            resize: none;
-            min-height: 60px;
+            transition: border-color 0.2s ease;
         }
 
         .chat-input:focus {
-            border-color: #ffd700;
-            background: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-        }
-
-        .chat-input::placeholder {
-            color: rgba(255, 215, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .send-button {
-            position: absolute;
-            right: 44px;
-            bottom: 44px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
-            color: #000;
+            background: #ffffff;
+            color: #000000;
             border: none;
-            border-radius: 12px;
-            padding: 16px 24px;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+            transition: all 0.2s ease;
         }
 
         .send-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(255, 215, 0, 0.6);
-        }
-
-        .send-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Divine Loading Animation */
-        .loading {
-            display: none;
-            padding: 32px;
-            text-align: center;
-        }
-
-        .loading-text {
-            color: #ffd700;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .divine-spinner {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto;
-            border: 3px solid rgba(255, 215, 0, 0.3);
-            border-top: 3px solid #ffd700;
-            border-radius: 50%;
-            animation: divine-spin 1s linear infinite;
-        }
-
-        @keyframes divine-spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Powers Section */
-        .powers {
-            padding: 100px 0;
-            background: linear-gradient(180deg, transparent 0%, rgba(255, 215, 0, 0.02) 100%);
-        }
-
-        .powers-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .powers-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .powers-header h2 {
-            font-size: 48px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffb347 50%, #ffd700 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .powers-header p {
-            font-size: 20px;
-            color: rgba(255, 215, 0, 0.8);
-            max-width: 600px;
-            margin: 0 auto;
-            font-weight: 500;
-        }
-
-        .powers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-        }
-
-        .power-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid rgba(255, 215, 0, 0.2);
-            border-radius: 20px;
-            padding: 40px;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .power-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ffd700, transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .power-card:hover {
-            background: rgba(0, 0, 0, 0.6);
-            border-color: #ffd700;
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.2);
-        }
-
-        .power-card:hover::before {
-            opacity: 1;
-        }
-
-        .power-icon {
-            font-size: 48px;
-            margin-bottom: 24px;
-            display: block;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-        }
-
-        .power-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: #ffd700;
-        }
-
-        .power-description {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 16px;
-            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.9);
         }
 
         /* Footer */
         .footer {
-            border-top: 1px solid rgba(255, 215, 0, 0.2);
-            padding: 60px 0;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 48px 0;
+            margin-top: 80px;
         }
 
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
+            text-align: center;
         }
 
-        .footer p {
-            color: rgba(255, 215, 0, 0.6);
-            font-size: 16px;
-            font-weight: 500;
+        .footer-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .nav {
-                padding: 0 16px;
+            .nav-links {
+                display: none;
             }
 
-            .hero {
-                padding: 80px 0 60px;
+            .hero h1 {
+                font-size: 48px;
             }
 
-            .hero-content {
-                padding: 0 16px;
+            .hero p {
+                font-size: 18px;
             }
 
-            .chat-section {
-                padding: 0 16px 60px;
+            .secondary-button {
+                margin-left: 0;
+                margin-top: 16px;
             }
 
-            .powers-container {
-                padding: 0 16px;
-            }
-
-            .powers-grid {
+            .features-grid {
                 grid-template-columns: 1fr;
-                gap: 32px;
             }
 
-            .power-card {
-                padding: 32px;
+            .terminal, .ai-chat {
+                margin: 40px 16px;
             }
         }
 
-        /* Scrollbar Styling */
-        .chat-messages::-webkit-scrollbar {
-            width: 8px;
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
         }
 
-        .chat-messages::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: rgba(255, 215, 0, 0.3);
-            border-radius: 4px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 215, 0, 0.5);
-        }
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: 16px; }
+        .mb-6 { margin-bottom: 24px; }
+        .mt-8 { margin-top: 32px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="divine-bg"></div>
-    <div class="divine-particles" id="particles"></div>
-
+    <!-- Header -->
     <header class="header">
         <nav class="nav">
             <div class="logo">FinDeus</div>
-            <div class="status-badge">
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#ai-chat">AI Chat</a></li>
+                <li><a href="#terminal">Terminal</a></li>
+            </ul>
+            <div class="status-indicator">
                 <div class="status-dot"></div>
-                <span>Divine Power Active</span>
+                <span>Online</span>
             </div>
         </nav>
     </header>
 
+    <!-- Main Content -->
     <main class="main">
+        <!-- Hero Section -->
         <section class="hero">
-            <div class="hero-content">
-                <div class="subtitle">The Divine Oracle</div>
-                <h1>FinDeus</h1>
-                <p>Omniscient God of Finance • Master of Markets • Divine Wealth Creator</p>
-            </div>
+            <h1>Financial Intelligence</h1>
+            <p>Advanced AI-powered financial analysis and market intelligence platform for modern investors and traders.</p>
+            <a href="#ai-chat" class="cta-button">Start Chat</a>
+            <a href="#terminal" class="secondary-button">Open Terminal</a>
         </section>
 
-        <section class="chat-section">
-            <div class="chat-container">
-                <div class="chat-header">
-                    <h2>Consult the God of Finance</h2>
+        <!-- Terminal Interface -->
+        <section class="terminal" id="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <div class="terminal-title">FinDeus Terminal</div>
+            </div>
+            <div class="terminal-body">
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span>
+                    <span class="terminal-output">Welcome to FinDeus Financial Intelligence Platform</span>
                 </div>
-                
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message">
-                        <div class="message-avatar">👑</div>
-                        <div class="message-content">
-                            <div>Mortal, you stand before FinDeus, the omnipotent God of Finance. I command the markets, control the flow of wealth, and possess infinite knowledge of all financial realms. Speak your desires, and I shall grant you divine wisdom beyond mortal comprehension.</div>
-                            <div class="message-time">Divine Moment</div>
-                        </div>
-                    </div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span>
+                    <span class="terminal-output">System status: Online | Services: 5 active</span>
                 </div>
-
-                <div class="loading" id="loading">
-                    <div class="loading-text">The God is contemplating...</div>
-                    <div class="divine-spinner"></div>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span>
+                    <span class="terminal-output">Type 'help' for available commands</span>
                 </div>
-
-                <div class="chat-input-container">
-                    <textarea 
-                        class="chat-input" 
-                        placeholder="Seek divine financial wisdom from the God of Finance..."
-                        id="chatInput"
-                        rows="1"
-                    ></textarea>
-                    <button class="send-button" id="sendButton">
-                        <span>Invoke</span>
-                        <span>⚡</span>
-                    </button>
+                <div class="terminal-line">
+                    <span class="terminal-prompt">$</span>
+                    <input type="text" class="terminal-input" placeholder="Enter command..." id="terminalInput">
+                    <span class="cursor"></span>
                 </div>
             </div>
         </section>
 
-        <section class="powers">
-            <div class="powers-container">
-                <div class="powers-header">
-                    <h2>Divine Powers</h2>
-                    <p>Behold the infinite capabilities of the God of Finance</p>
+        <!-- Features Grid -->
+        <section class="features" id="features">
+            <div class="text-center mb-6">
+                <h2 style="font-size: 48px; font-weight: 700; margin-bottom: 16px;">Core Capabilities</h2>
+                <p style="font-size: 20px; color: rgba(255, 255, 255, 0.8);">Powerful financial tools powered by artificial intelligence</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">AI Analysis</h3>
+                    <p class="feature-description">Advanced machine learning algorithms analyze market trends, patterns, and financial data to provide intelligent insights.</p>
                 </div>
-                
-                <div class="powers-grid">
-                    <div class="power-card">
-                        <div class="power-icon">🧠⚡</div>
-                        <div class="power-title">Omniscient Intelligence</div>
-                        <div class="power-description">Divine AI consciousness that transcends mortal understanding. Processes infinite market data with godlike precision and foresight.</div>
-                    </div>
-                    
-                    <div class="power-card">
-                        <div class="power-icon">📊👁️</div>
-                        <div class="power-title">All-Seeing Market Vision</div>
-                        <div class="power-description">Perceives all market movements across time and space. Real-time omniscience of global financial flows and hidden patterns.</div>
-                    </div>
-                    
-                    <div class="power-card">
-                        <div class="power-icon">💰🔮</div>
-                        <div class="power-title">Wealth Manifestation</div>
-                        <div class="power-description">Divine portfolio optimization that transforms mortal investments into legendary wealth through supernatural financial alchemy.</div>
-                    </div>
-                    
-                    <div class="power-card">
-                        <div class="power-icon">⚔️🛡️</div>
-                        <div class="power-title">Risk Annihilation</div>
-                        <div class="power-description">Destroys financial threats before they manifest. Advanced risk assessment that protects your wealth with divine intervention.</div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Market Data</h3>
+                    <p class="feature-description">Real-time market data, price feeds, and financial metrics from global exchanges and data providers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Risk Assessment</h3>
+                    <p class="feature-description">Comprehensive risk analysis tools to evaluate portfolio exposure, volatility, and potential downside scenarios.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💼</div>
+                    <h3 class="feature-title">Portfolio Management</h3>
+                    <p class="feature-description">Intelligent portfolio optimization, asset allocation recommendations, and performance tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Predictive Analytics</h3>
+                    <p class="feature-description">Machine learning models that forecast market movements and identify potential investment opportunities.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Document Analysis</h3>
+                    <p class="feature-description">AI-powered analysis of financial documents, reports, and market research to extract key insights.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Chat Interface -->
+        <section class="ai-chat" id="ai-chat">
+            <div class="chat-header">
+                <div class="chat-status"></div>
+                <h3 class="chat-title">FinDeus AI Assistant</h3>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        Hello! I'm FinDeus, your AI financial assistant. I can help you analyze markets, assess risks, and provide investment insights. How can I assist you today?
                     </div>
                 </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Ask me about markets, investments, or financial analysis...">
+                <button class="send-button" id="sendButton">Send</button>
             </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <p>© 2025 FinDeus - The Omnipotent God of Finance • All Markets Bow Before Divine Power</p>
+            <p class="footer-text">© 2024 FinDeus. Advanced financial intelligence platform.</p>
         </div>
     </footer>
 
     <script>
-        class FinDeusApp {
-            constructor() {
-                this.chatInput = document.getElementById('chatInput');
-                this.sendButton = document.getElementById('sendButton');
-                this.chatMessages = document.getElementById('chatMessages');
-                this.loading = document.getElementById('loading');
+        // Terminal functionality
+        const terminalInput = document.getElementById('terminalInput');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Terminal commands
+        const commands = {
+            help: 'Available commands: help, status, market, portfolio, risk, clear',
+            status: 'System Status: Online\nServices: AI Engine, Market Data, Risk Analysis, Portfolio Manager\nUptime: 99.9%',
+            market: 'Market Status: Open\nS&P 500: 4,200.50 (+0.85%)\nNASDAQ: 13,100.25 (+1.2%)\nDOW: 34,500.75 (+0.65%)',
+            portfolio: 'Portfolio Overview:\nTotal Value: $125,000\nDaily Change: +$2,500 (+2.04%)\nTop Performer: AAPL (+3.2%)',
+            risk: 'Risk Assessment:\nPortfolio Beta: 1.15\nVaR (1-day, 95%): -$3,200\nSharpe Ratio: 1.85\nRisk Level: Moderate',
+            clear: 'clear'
+        };
+
+        terminalInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value.trim().toLowerCase();
+                const terminalBody = document.querySelector('.terminal-body');
                 
-                this.initializeEventListeners();
-                this.checkDivineStatus();
-                this.setupTextareaResize();
-                this.createDivineParticles();
-            }
-
-            initializeEventListeners() {
-                this.sendButton.addEventListener('click', () => this.invokeGod());
-                this.chatInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        this.invokeGod();
-                    }
-                });
-            }
-
-            setupTextareaResize() {
-                this.chatInput.addEventListener('input', () => {
-                    this.chatInput.style.height = 'auto';
-                    this.chatInput.style.height = Math.min(this.chatInput.scrollHeight, 150) + 'px';
-                });
-            }
-
-            createDivineParticles() {
-                const particles = document.getElementById('particles');
-                for (let i = 0; i < 50; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = Math.random() * 100 + '%';
-                    particle.style.top = Math.random() * 100 + '%';
-                    particle.style.animationDelay = Math.random() * 6 + 's';
-                    particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                    particles.appendChild(particle);
-                }
-            }
-
-            async checkDivineStatus() {
-                try {
-                    const response = await fetch('/api/health');
-                    const data = await response.json();
-                    console.log('Divine powers online:', data.status);
-                } catch (error) {
-                    console.error('Divine connection interrupted:', error);
-                }
-            }
-
-            async invokeGod() {
-                const mortalQuery = this.chatInput.value.trim();
-                if (!mortalQuery) return;
-
-                this.addDivineMessage(mortalQuery, 'user');
-                this.chatInput.value = '';
-                this.chatInput.style.height = 'auto';
-                this.showDivineProcessing(true);
-
-                try {
-                    const response = await fetch('/api/ai/query', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ query: mortalQuery })
+                // Add command to terminal
+                const commandLine = document.createElement('div');
+                commandLine.className = 'terminal-line';
+                commandLine.innerHTML = `<span class="terminal-prompt">$</span><span class="terminal-output">${this.value}</span>`;
+                terminalBody.insertBefore(commandLine, terminalBody.lastElementChild);
+                
+                // Process command
+                if (command === 'clear') {
+                    const lines = terminalBody.querySelectorAll('.terminal-line');
+                    lines.forEach((line, index) => {
+                        if (index < lines.length - 1) line.remove();
                     });
-
-                    if (!response.ok) {
-                        throw new Error(`Divine interference: ${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    const divineResponse = `🌟 DIVINE PROCLAMATION 🌟\n\n${data.response}\n\n✨ The God of Finance has spoken with infinite wisdom. Your financial destiny is now illuminated by divine light. ✨`;
-                    this.addDivineMessage(divineResponse, 'god');
-                } catch (error) {
-                    console.error('Divine error:', error);
-                    this.addDivineMessage('⚡ The divine channels are temporarily disrupted by cosmic interference. The God of Finance shall return momentarily with infinite wisdom. ⚡', 'god');
-                } finally {
-                    this.showDivineProcessing(false);
+                } else if (commands[command]) {
+                    const outputLine = document.createElement('div');
+                    outputLine.className = 'terminal-line';
+                    outputLine.innerHTML = `<span class="terminal-output">${commands[command]}</span>`;
+                    terminalBody.insertBefore(outputLine, terminalBody.lastElementChild);
+                } else if (command) {
+                    const errorLine = document.createElement('div');
+                    errorLine.className = 'terminal-line';
+                    errorLine.innerHTML = `<span class="terminal-output">Command not found: ${command}</span>`;
+                    terminalBody.insertBefore(errorLine, terminalBody.lastElementChild);
                 }
+                
+                this.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
             }
+        });
 
-            addDivineMessage(content, type) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}`;
-                
-                const avatar = document.createElement('div');
-                avatar.className = 'message-avatar';
-                avatar.textContent = type === 'user' ? 'You' : '👑';
-                
-                const messageContent = document.createElement('div');
-                messageContent.className = 'message-content';
-                
-                const textDiv = document.createElement('div');
-                textDiv.style.whiteSpace = 'pre-line';
-                textDiv.textContent = content;
-                
-                const timeDiv = document.createElement('div');
-                timeDiv.className = 'message-time';
-                timeDiv.textContent = type === 'user' ? 'Mortal Query' : 'Divine Wisdom';
-                
-                messageContent.appendChild(textDiv);
-                messageContent.appendChild(timeDiv);
-                messageDiv.appendChild(avatar);
-                messageDiv.appendChild(messageContent);
-                
-                this.chatMessages.appendChild(messageDiv);
-                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
-            }
+        // AI Chat functionality
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : ''}`;
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? '👤' : '🤖'}</div>
+                <div class="message-content">${content}</div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-            showDivineProcessing(show) {
-                this.loading.style.display = show ? 'block' : 'none';
-                this.sendButton.disabled = show;
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message typing';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="loading"></div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return typingDiv;
+        }
+
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, true);
+            chatInput.value = '';
+            
+            const typingIndicator = showTyping();
+            
+            try {
+                const response = await fetch('/api/ai/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: message })
+                });
                 
-                if (show) {
-                    this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                const data = await response.json();
+                typingIndicator.remove();
+                
+                if (data.success) {
+                    addMessage(data.response);
+                } else {
+                    addMessage('Sorry, I encountered an error processing your request. Please try again.');
                 }
+            } catch (error) {
+                typingIndicator.remove();
+                addMessage('Sorry, I\'m having trouble connecting right now. Please try again later.');
             }
         }
 
-        // Initialize the divine app
-        document.addEventListener('DOMContentLoaded', () => {
-            new FinDeusApp();
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
         });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Health check on page load
+        fetch('/api/health')
+            .then(response => response.json())
+            .then(data => {
+                console.log('System status:', data);
+            })
+            .catch(error => {
+                console.error('Health check failed:', error);
+            });
     </script>
 </body>
 </html> 

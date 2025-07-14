@@ -414,6 +414,22 @@
                             })
                         });
                         
+                        // Debug: Check response content type
+                        const contentType = response.headers.get('content-type');
+                        console.log('AI query response content type:', contentType);
+                        
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            console.error('AI query failed:', errorText);
+                            throw new Error(`API request failed: ${response.status} - ${errorText.substring(0, 200)}`);
+                        }
+                        
+                        if (!contentType || !contentType.includes('application/json')) {
+                            const textResponse = await response.text();
+                            console.error('Expected JSON but got:', textResponse);
+                            throw new Error('Server returned non-JSON response: ' + textResponse.substring(0, 200));
+                        }
+                        
                         const data = await response.json();
                         
                         if (response.ok) {
@@ -550,8 +566,19 @@
                 
                 async checkHealth() {
                     try {
-                        const response = await fetch('/api/health');
-                        const data = await response.json();
+                                    const response = await fetch('/api/health');
+            
+            // Debug: Check response content type
+            const contentType = response.headers.get('content-type');
+            console.log('Health check response content type:', contentType);
+            
+            if (!contentType || !contentType.includes('application/json')) {
+                const textResponse = await response.text();
+                console.error('Expected JSON but got:', textResponse);
+                throw new Error('Server returned non-JSON response: ' + textResponse.substring(0, 200));
+            }
+            
+            const data = await response.json();
                         
                         let status = 'System Status:\n';
                         status += `OpenAI: ${data.services.openai ? '✅ Connected' : '❌ Disconnected'}\n`;

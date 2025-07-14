@@ -76,6 +76,19 @@ def cache_result(duration=CACHE_DURATION):
     return decorator
 
 # Health Check Endpoint
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint for debugging"""
+    return jsonify({
+        'message': 'FinDeus Netlify API is running',
+        'timestamp': datetime.now().isoformat(),
+        'available_endpoints': [
+            '/api/health',
+            '/api/ai/query',
+            '/api/embeddings/generate'
+        ]
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""

@@ -39,21 +39,18 @@ def handler(event, context):
         query_params = event.get('queryStringParameters') or {}
         body = event.get('body', '')
         
-        # Determine the route - check query params first, then path
+        # Debug logging
+        print(f"Debug - Method: {method}, Path: {path}, Query: {query_params}")
+        
+        # Determine the route from query parameters
         if 'path' in query_params:
             api_path = query_params['path']
             route = f'/api/{api_path}'
         else:
-            # Extract from path (for direct function calls)
-            if path.startswith('/.netlify/functions/app'):
-                # Extract the API path from the URL
-                path_parts = path.split('/')
-                if len(path_parts) > 4:
-                    route = f'/api/{"/".join(path_parts[4:])}'
-                else:
-                    route = '/api/health'  # default
-            else:
-                route = path
+            # Fallback to path parsing
+            route = path
+        
+        print(f"Debug - Route determined: {route}")
         
         # Parse JSON body
         body_data = {}
@@ -73,7 +70,13 @@ def handler(event, context):
                     'service': 'FinDeus - Financial Intelligence',
                     'timestamp': datetime.now().isoformat(),
                     'version': '2.0.0',
-                    'openai_configured': bool(openai_key)
+                    'openai_configured': bool(openai_key),
+                    'debug': {
+                        'method': method,
+                        'path': path,
+                        'query_params': query_params,
+                        'route': route
+                    }
                 })
             }
         
@@ -174,7 +177,8 @@ def handler(event, context):
                 'available_routes': ['/api/health', '/api/ai/query'],
                 'debug': {
                     'path': path,
-                    'query_params': query_params
+                    'query_params': query_params,
+                    'event': event
                 }
             })
         }
@@ -188,6 +192,9 @@ def handler(event, context):
             },
             'body': json.dumps({
                 'error': 'Internal server error',
-                'message': str(e)
+                'message': str(e),
+                'debug': {
+                    'event': event
+                }
             })
         } 

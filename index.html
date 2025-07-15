@@ -731,3 +731,17 @@
     </script>
 </body>
 </html> 
+        });
+
+        // Health check on page load
+        fetch('/api/health')
+            .then(response => response.json())
+            .then(data => {
+                console.log('System status:', data);
+            })
+            .catch(error => {
+                console.error('Health check failed:', error);
+            });
+    </script>
+</body>
+</html> 

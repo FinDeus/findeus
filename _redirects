@@ -1,2 +1,5 @@
+/api/health /.netlify/functions/app?path=health 200
 /api/* /.netlify/functions/app/:splat 200
+/* /index.html 200 
+/api/* /.netlify/functions/app?path=:splat 200
 /* /index.html 200 

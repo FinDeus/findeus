@@ -39,17 +39,21 @@ def handler(event, context):
         query_params = event.get('queryStringParameters') or {}
         body = event.get('body', '')
         
-        # Extract API path from query parameters
+        # Determine the route - check query params first, then path
         if 'path' in query_params:
             api_path = query_params['path']
-            if api_path == 'health':
-                route = '/api/health'
-            elif api_path == 'ai/query':
-                route = '/api/ai/query'
-            else:
-                route = f'/api/{api_path}'
+            route = f'/api/{api_path}'
         else:
-            route = path
+            # Extract from path (for direct function calls)
+            if path.startswith('/.netlify/functions/app'):
+                # Extract the API path from the URL
+                path_parts = path.split('/')
+                if len(path_parts) > 4:
+                    route = f'/api/{"/".join(path_parts[4:])}'
+                else:
+                    route = '/api/health'  # default
+            else:
+                route = path
         
         # Parse JSON body
         body_data = {}
@@ -167,7 +171,11 @@ def handler(event, context):
                 'error': 'Route not found',
                 'route': route,
                 'method': method,
-                'available_routes': ['/api/health', '/api/ai/query']
+                'available_routes': ['/api/health', '/api/ai/query'],
+                'debug': {
+                    'path': path,
+                    'query_params': query_params
+                }
             })
         }
         

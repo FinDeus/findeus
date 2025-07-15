@@ -1,9 +1,19 @@
 [build]
-  command = "echo 'Building FinDeus God of Finance'"
+  command = "echo 'Building FinDeus Financial Intelligence'"
   publish = "."
 
 [functions]
   directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/app?path=health"
+  status = 200
+
+[[redirects]]
+  from = "/api/ai/query"
+  to = "/.netlify/functions/app?path=ai/query"
+  status = 200
 
 [[redirects]]
   from = "/api/*"

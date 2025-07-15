@@ -676,22 +676,18 @@
             const typingIndicator = showTyping();
             
             try {
-                const response = await fetch('/.netlify/functions/app', {
+                const response = await fetch('/api/ai/query', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ 
-                        path: '/api/ai/query',
-                        httpMethod: 'POST',
-                        body: JSON.stringify({ query: message })
-                    })
+                    body: JSON.stringify({ query: message })
                 });
                 
                 const data = await response.json();
                 typingIndicator.remove();
                 
-                if (data.success) {
+                if (data.response) {
                     addMessage(data.response);
                 } else {
                     addMessage('Sorry, I encountered an error processing your request. Please try again.');
@@ -724,16 +720,7 @@
         });
 
         // Health check on page load
-        fetch('/.netlify/functions/app', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                path: '/api/health',
-                httpMethod: 'GET'
-            })
-        })
+        fetch('/api/health')
             .then(response => response.json())
             .then(data => {
                 console.log('System status:', data);
